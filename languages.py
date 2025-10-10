@@ -1,4 +1,4 @@
-# languages.py (Final Sürüm - Tüm Özellikler Dahil)
+
 
 TRANSLATIONS = {
     "tr": {

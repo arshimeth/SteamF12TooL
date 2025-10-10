@@ -1,4 +1,4 @@
-# gui.py (Final Sürüm - Tüm Özellikler Dahil)
+
 
 import customtkinter as ctk
 from tkinter import filedialog, messagebox, Canvas
@@ -8,11 +8,11 @@ from logic import (process_image, scan_for_games, find_steam_profiles,
                    load_settings, save_settings)
 from languages import TRANSLATIONS
 
-# --- TEMA VE SABİTLER ---
+
 STEAM_BLUE = "#1F6F8B"
 DONATE_RED = "#c42d33"
 
-# Kırpma Penceresi Sınıfı
+
 class CropWindow(ctk.CTkToplevel):
     def __init__(self, parent, pil_image):
         super().__init__(parent)
@@ -70,7 +70,7 @@ class CropWindow(ctk.CTkToplevel):
         self.crop_coords = (int(x1 * ratio_w), int(y1 * ratio_h), int(x2 * ratio_w), int(y2 * ratio_h))
         self.destroy()
 
-# Ana Uygulama Sınıfı
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -220,7 +220,7 @@ class App(ctk.CTk):
         iban_frame = ctk.CTkFrame(donate_win, fg_color="transparent")
         iban_frame.pack(pady=10, padx=20, fill="x")
 
-        # <<<--- KENDİ IBAN BİLGİNİZİ BURAYA GİRİN --->>>
+        
         self.iban_string = "(TRY)TR95 0006 2000 1660 0006 8927 47 (USD)TR07 0006 2000 1660 0009 0687 80 (EUR)TR34 0006 2000 1660 0009 0687 79 "
 
         iban_label = ctk.CTkLabel(iban_frame, text=self._("donate_iban_label"), font=ctk.CTkFont(size=12, weight="bold"))
@@ -394,7 +394,7 @@ class App(ctk.CTk):
                    self.language_menu, self.rotate_left_button, self.rotate_right_button,
                    self.crop_button, self.reset_button, self.donate_button]
         for widget in widgets:
-            # Widget'in var olup olmadığını kontrol ederek daha güvenli hale getir
+            
             if hasattr(self, widget.winfo_name()):
                 widget.configure(state=state)
 

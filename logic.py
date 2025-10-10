@@ -1,4 +1,4 @@
-# logic.py - SteamF12TooL Arka Plan İşlemleri
+
 
 import os
 import time
@@ -11,10 +11,10 @@ import re
 
 CONFIG_FILE = 'config.json'
 
-# --- AYAR YÖNETİMİ (CONFIGURATION) ---
+
 
 def load_settings():
-    """config.json dosyasından ayarları yükler."""
+  
     try:
         if os.path.exists(CONFIG_FILE):
             with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
@@ -24,7 +24,7 @@ def load_settings():
     return {'language': 'en', 'theme': 'Dark', 'last_profile': None}
 
 def save_settings(settings):
-    """Verilen ayarları config.json dosyasına kaydeder."""
+   
     try:
         with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
             json.dump(settings, f, indent=4)
@@ -32,10 +32,10 @@ def save_settings(settings):
         print(f"Hata: Ayarlar dosyası '{CONFIG_FILE}' kaydedilemedi.")
 
 
-# --- STEAM OTOMASYONU (STEAM AUTOMATION) ---
+
 
 def get_steam_install_path():
-    """Windows Registry'den Steam'in kurulum yolunu bulur."""
+   
     try:
         key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam")
         path, _ = winreg.QueryValueEx(key, "InstallPath")
@@ -44,7 +44,7 @@ def get_steam_install_path():
         return None
 
 def find_steam_profiles():
-    """Bilgisayardaki tüm Steam profillerini userdata klasöründen tarar ve kullanıcı adı ile ID'sini döndürür."""
+  
     steam_path = get_steam_install_path()
     if not steam_path: return []
     userdata_path = os.path.join(steam_path, "userdata")
@@ -65,7 +65,7 @@ def find_steam_profiles():
     return profiles
 
 def get_app_list_from_steam():
-    """Steam API'sinden tüm oyunların listesini çeker ve bir JSON dosyasına kaydeder."""
+   
     try:
         url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
         response = requests.get(url, timeout=10)
@@ -79,7 +79,7 @@ def get_app_list_from_steam():
         return None
 
 def scan_for_games(selected_user_id):
-    """SADECE seçilen kullanıcının klasörlerini tarar ve SS klasörü olan oyunları bulur."""
+ 
     steam_path = get_steam_install_path()
     if not steam_path: return {"success": False, "message_key": "steam_not_found"}
 
@@ -109,14 +109,14 @@ def scan_for_games(selected_user_id):
     return {"success": True, "data": found_games}
 
 
-# --- RESİM İŞLEME (IMAGE PROCESSING) ---
+
 
 def generate_steam_filename():
     """Rastgele, tarih ve saat damgalı bir Steam dosyası adı oluşturur."""
     return f"{time.strftime('%Y%m%d%H%M%S')}_{random.randint(1, 5)}.jpg"
 
 def create_thumbnail(image_source, output_path, width=200):
-    """Hem dosya yolundan hem de Pillow nesnesinden thumbnail oluşturabilir."""
+    
     try:
         img = image_source if isinstance(image_source, Image.Image) else Image.open(image_source)
         ratio = width / float(img.size[0])
@@ -129,7 +129,7 @@ def create_thumbnail(image_source, output_path, width=200):
         return False
 
 def process_image(image_source, screenshots_folder_path):
-    """Hem dosya yolundan hem de Pillow nesnesinden resim işleyebilir."""
+    
     try:
         img_to_process = image_source if isinstance(image_source, Image.Image) else Image.open(image_source)
         steam_filename = generate_steam_filename()
