@@ -20,7 +20,8 @@ Modern & User-Friendly UI: A clean interface with both Light and Dark theme opti
 Saves Your Settings: Remembers your preferences for language, theme, and the last selected profile for a personalized experience every time.
 
 TR
----------------------------------------------------------------------------------------------------,
+---------------------------------------------------------------------------------------------------
+
 Steam'in F12 ile çekilen standart ekran görüntüleri yerine, bilgisayarınızdaki herhangi bir resmi (yüksek çözünürlüklü oyun içi anlar, sanat çalışmaları, komik resimler vb.) sanki oyun içinde çekilmiş gibi Steam kütüphanenize eklemenizi sağlayan gelişmiş bir araç.
 
 Özellikler:
