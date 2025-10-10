@@ -1,4 +1,4 @@
-# gui.py (Final Stabil Sürüm - Arayüz Kayma Sorunu Düzeltildi)
+
 
 import customtkinter as ctk
 from tkinter import filedialog, messagebox, Canvas
@@ -9,11 +9,9 @@ from logic import (process_image, scan_for_games, find_steam_profiles,
                    load_settings, save_settings)
 from languages import TRANSLATIONS
 
-# --- TEMA VE SABİTLER ---
 STEAM_BLUE = "#1F6F8B"
 DONATE_RED = "#c42d33"
 
-# Kırpma Penceresi Sınıfı
 class CropWindow(ctk.CTkToplevel):
     def __init__(self, parent, pil_image):
         super().__init__(parent)
@@ -51,7 +49,7 @@ class CropWindow(ctk.CTkToplevel):
         self.crop_coords = (int(x1 * ratio_w), int(y1 * ratio_h), int(x2 * ratio_w), int(y2 * ratio_h))
         self.destroy()
 
-# Ana Uygulama Sınıfı
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -232,8 +230,8 @@ class App(ctk.CTk):
             except Exception as e:
                 self.show_message({"success": False, "message_key": "unexpected_error", "data": str(e)})
         elif len(self.image_paths_list) > 1:
-            self.preview_label.configure(image=None) # Önce resmi kaldır
-            self.preview_label.configure(text=self._("multiple_images_selected", len(self.image_paths_list))) # Sonra metni ayarla
+            self.preview_label.configure(image=None)  
+            self.preview_label.configure(text=self._("multiple_images_selected", len(self.image_paths_list))) 
             self.image_path_var.set(self._("multiple_images_selected", len(self.image_paths_list)))
             self.show_edit_tools(False)
 

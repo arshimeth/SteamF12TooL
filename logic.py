@@ -1,5 +1,3 @@
-# logic.py - SteamF12TooL Arka Plan İşlemleri (Final Sürüm)
-
 import os
 import time
 import random
@@ -11,7 +9,6 @@ import re
 
 CONFIG_FILE = 'config.json'
 
-# --- AYAR YÖNETİMİ (CONFIGURATION) ---
 def load_settings():
     try:
         if os.path.exists(CONFIG_FILE):
@@ -28,7 +25,6 @@ def save_settings(settings):
     except IOError:
         print(f"Hata: Ayarlar dosyası '{CONFIG_FILE}' kaydedilemedi.")
 
-# --- STEAM OTOMASYONU (STEAM AUTOMATION) ---
 def get_steam_install_path():
     try:
         key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam")
@@ -97,7 +93,6 @@ def scan_for_games(selected_user_id):
     found_games.sort(key=lambda x: x['name'])
     return {"success": True, "data": found_games}
 
-# --- RESİM İŞLEME (IMAGE PROCESSING) ---
 def generate_steam_filename():
     return f"{time.strftime('%Y%m%d%H%M%S')}_{random.randint(1, 5)}.jpg"
 
