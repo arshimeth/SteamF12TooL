@@ -1,4 +1,4 @@
-
+# logic.py - SteamF12TooL Arka Plan İşlemleri (Final Sürüm)
 
 import os
 import time
@@ -11,10 +11,8 @@ import re
 
 CONFIG_FILE = 'config.json'
 
-
-
+# --- AYAR YÖNETİMİ (CONFIGURATION) ---
 def load_settings():
-  
     try:
         if os.path.exists(CONFIG_FILE):
             with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
@@ -24,18 +22,14 @@ def load_settings():
     return {'language': 'en', 'theme': 'Dark', 'last_profile': None}
 
 def save_settings(settings):
-   
     try:
         with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
             json.dump(settings, f, indent=4)
     except IOError:
         print(f"Hata: Ayarlar dosyası '{CONFIG_FILE}' kaydedilemedi.")
 
-
-
-
+# --- STEAM OTOMASYONU (STEAM AUTOMATION) ---
 def get_steam_install_path():
-   
     try:
         key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam")
         path, _ = winreg.QueryValueEx(key, "InstallPath")
@@ -44,7 +38,6 @@ def get_steam_install_path():
         return None
 
 def find_steam_profiles():
-  
     steam_path = get_steam_install_path()
     if not steam_path: return []
     userdata_path = os.path.join(steam_path, "userdata")
@@ -65,29 +58,25 @@ def find_steam_profiles():
     return profiles
 
 def get_app_list_from_steam():
-   
     try:
         url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         data = response.json()
         app_map = {str(app['appid']): app['name'] for app in data.get('applist', {}).get('apps', [])}
-        with open("steam_app_list.json", "w", encoding="utf-8") as f:
-            json.dump(app_map, f)
+        with open("steam_app_list.json", "w", encoding="utf-8") as f: json.dump(app_map, f)
         return app_map
     except (requests.RequestException, json.JSONDecodeError):
         return None
 
 def scan_for_games(selected_user_id):
- 
     steam_path = get_steam_install_path()
     if not steam_path: return {"success": False, "message_key": "steam_not_found"}
 
     app_map = {}
     try:
         if os.path.exists("steam_app_list.json"):
-            with open("steam_app_list.json", "r", encoding="utf-8") as f:
-                app_map = json.load(f)
+            with open("steam_app_list.json", "r", encoding="utf-8") as f: app_map = json.load(f)
         else:
             app_map = get_app_list_from_steam()
             if app_map is None: return {"success": False, "message_key": "applist_download_fail"}
@@ -108,15 +97,11 @@ def scan_for_games(selected_user_id):
     found_games.sort(key=lambda x: x['name'])
     return {"success": True, "data": found_games}
 
-
-
-
+# --- RESİM İŞLEME (IMAGE PROCESSING) ---
 def generate_steam_filename():
-    """Rastgele, tarih ve saat damgalı bir Steam dosyası adı oluşturur."""
     return f"{time.strftime('%Y%m%d%H%M%S')}_{random.randint(1, 5)}.jpg"
 
 def create_thumbnail(image_source, output_path, width=200):
-    
     try:
         img = image_source if isinstance(image_source, Image.Image) else Image.open(image_source)
         ratio = width / float(img.size[0])
@@ -129,15 +114,13 @@ def create_thumbnail(image_source, output_path, width=200):
         return False
 
 def process_image(image_source, screenshots_folder_path):
-    
     try:
         img_to_process = image_source if isinstance(image_source, Image.Image) else Image.open(image_source)
         steam_filename = generate_steam_filename()
         steam_full_path = os.path.join(screenshots_folder_path, steam_filename)
         steam_thumbs_folder = os.path.join(screenshots_folder_path, "thumbnails")
         steam_thumb_path = os.path.join(steam_thumbs_folder, steam_filename)
-        if not os.path.exists(steam_thumbs_folder):
-            os.makedirs(steam_thumbs_folder)
+        if not os.path.exists(steam_thumbs_folder): os.makedirs(steam_thumbs_folder)
         rgb_img = img_to_process.convert("RGB")
         rgb_img.save(steam_full_path, "JPEG", quality=95)
         if not create_thumbnail(img_to_process, steam_thumb_path):
