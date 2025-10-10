@@ -19,6 +19,19 @@ Modern & User-Friendly UI: A clean interface with both Light and Dark theme opti
 
 Saves Your Settings: Remembers your preferences for language, theme, and the last selected profile for a personalized experience every time.
 
+## 💖 Support the Project
+
+If you appreciate the time and effort that went into developing this project and find SteamF12TooL useful, please consider supporting it with a small donation.
+
+Your support is a great motivator for the continued maintenance and development of new features. Essentially, you'd be buying me a coffee! ☕️
+
+You can use the IBAN below for your contribution:
+
+ 
+**IBAN:** `(USD)TR07 0006 2000 1660 0009 0687 80 (EUR)TR34 0006 2000 1660 0009 0687 79 (TRY)TR95 0006 2000 1660 0006 8927 47`
+
+Thank you so much in advance for all your support!
+
 TR
 ---------------------------------------------------------------------------------------------------
 
@@ -39,3 +52,15 @@ Dahili Resim Düzenleyici: Yüklemeden önce resimleri kırpma ve döndürme imk
 Modern ve Kullanıcı Dostu Arayüz: Açık ve Koyu tema seçeneklerine sahip, modern bir arayüz.
 
 Ayarları Kaydetme: Dil, tema ve son seçilen profil gibi tercihlerinizi hatırlar, her açılışta size özel bir deneyim sunar.
+
+## 💖 Projeyi Destekle
+
+Bu projeyi geliştirmek için harcanan zamanı ve emeği takdir ediyorsanız ve SteamF12TooL'u kullanışlı buluyorsanız, küçük bir bağışla destek olmayı düşünebilirsiniz.
+
+Desteğiniz, projenin devamlılığı ve gelecekte yeni özellikler eklenmesi için büyük bir motivasyon kaynağı olacaktır. Kısacası, bir kahve ısmarlamış olursunuz! ☕️
+
+Desteğiniz için aşağıdaki IBAN numarasını kullanabilirsiniz:
+
+**IBAN:** `(USD)TR07 0006 2000 1660 0009 0687 80 (EUR)TR34 0006 2000 1660 0009 0687 79 (TRY)TR95 0006 2000 1660 0006 8927 47`
+
+Tüm destekleriniz için şimdiden çok teşekkürler!
