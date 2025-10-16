@@ -1,5 +1,3 @@
-
-
 import customtkinter as ctk
 from tkinter import filedialog, messagebox, Canvas
 from PIL import Image, ImageTk
@@ -8,6 +6,16 @@ import sys
 from logic import (process_image, scan_for_games, find_steam_profiles, 
                    load_settings, save_settings)
 from languages import TRANSLATIONS
+
+
+def resource_path(relative_path):
+    
+    try:
+        
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 STEAM_BLUE = "#1F6F8B"
 DONATE_RED = "#c42d33"
@@ -58,7 +66,7 @@ class App(ctk.CTk):
             icon_path = os.path.join(sys._MEIPASS, 'logo.ico')
         else:
             icon_path = 'logo.ico'
-        try: self.iconbitmap(icon_path)
+        try: self.iconbitmap(resource_path('logo.ico'))
         except Exception: print("Ikon dosyası 'logo.ico' bulunamadı veya hatalı.")
 
         self.settings = load_settings()
