@@ -27,8 +27,6 @@ Your support is a great motivator for the continued maintenance and development 
 
 You can use the IBAN below for your contribution:
 
- 
-**IBAN:** `(USD)TR07 0006 2000 1660 0009 0687 80 (EUR)TR34 0006 2000 1660 0009 0687 79 (TRY)TR95 0006 2000 1660 0006 8927 47`
 
 **Steam Trade URL:** `https://steamcommunity.com/tradeoffer/new/?partner=856438463&token=BmjqXOfQ`
 
@@ -63,7 +61,7 @@ Desteğiniz, projenin devamlılığı ve gelecekte yeni özellikler eklenmesi i�
 
 Desteğiniz için aşağıdaki IBAN numarasını kullanabilirsiniz:
 
-**IBAN:** `(USD)TR07 0006 2000 1660 0009 0687 80 (EUR)TR34 0006 2000 1660 0009 0687 79 (TRY)TR95 0006 2000 1660 0006 8927 47`
+**IBAN:** `(Sadece TR içinde)TR95 0006 2000 1660 0006 8927 47`
 
 **Steam Trade URL:** `https://steamcommunity.com/tradeoffer/new/?partner=856438463&token=BmjqXOfQ`
 
