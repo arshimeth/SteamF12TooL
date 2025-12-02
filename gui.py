@@ -3,7 +3,7 @@ from tkinter import filedialog, messagebox, Canvas
 from PIL import Image, ImageTk
 import os
 import sys
-import ctypes  # <-- EKLENDİ: Görev çubuğu ikonu için gerekli
+import ctypes  
 from logic import (process_image, scan_for_games, find_steam_profiles, 
                    load_settings, save_settings)
 from languages import TRANSLATIONS

@@ -25,7 +25,7 @@ If you appreciate the time and effort that went into developing this project and
 
 Your support is a great motivator for the continued maintenance and development of new features. Essentially, you'd be buying me a coffee! ☕️
 
-You can use the IBAN below for your contribution:
+You can use the Steam Trade URL below for your contribution:
 
 
 **Steam Trade URL:** `https://steamcommunity.com/tradeoffer/new/?partner=856438463&token=BmjqXOfQ`
@@ -59,7 +59,7 @@ Bu projeyi geliştirmek için harcanan zamanı ve emeği takdir ediyorsanız ve 
 
 Desteğiniz, projenin devamlılığı ve gelecekte yeni özellikler eklenmesi için büyük bir motivasyon kaynağı olacaktır. Kısacası, bir kahve ısmarlamış olursunuz! ☕️
 
-Desteğiniz için aşağıdaki IBAN numarasını kullanabilirsiniz:
+Desteğiniz için aşağıdaki IBAN numarasını ve Steam Trade URL'yi kullanabilirsiniz:
 
 **IBAN:** `(Sadece TR içinde)TR95 0006 2000 1660 0006 8927 47`
 
