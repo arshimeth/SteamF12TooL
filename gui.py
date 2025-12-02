@@ -3,15 +3,14 @@ from tkinter import filedialog, messagebox, Canvas
 from PIL import Image, ImageTk
 import os
 import sys
+import ctypes  # <-- EKLENDİ: Görev çubuğu ikonu için gerekli
 from logic import (process_image, scan_for_games, find_steam_profiles, 
                    load_settings, save_settings)
 from languages import TRANSLATIONS
 
 
 def resource_path(relative_path):
-    
     try:
-        
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
@@ -62,12 +61,21 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        if hasattr(sys, '_MEIPASS'):
-            icon_path = os.path.join(sys._MEIPASS, 'logo.ico')
-        else:
-            icon_path = 'logo.ico'
-        try: self.iconbitmap(resource_path('logo.ico'))
-        except Exception: print("Ikon dosyası 'logo.ico' bulunamadı veya hatalı.")
+        
+        try:
+            myappid = 'mycompany.steamf12tool.gui.1.0' # Benzersiz ID
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+        except Exception:
+            pass
+
+        
+        icon_path = resource_path('logo.ico')
+        if os.path.exists(icon_path):
+            try:
+                self.iconbitmap(icon_path)
+            except Exception as e:
+                print(f"İkon yükleme hatası: {e}")
+       
 
         self.settings = load_settings()
         self.current_lang = self.settings.get('language', 'en')
@@ -129,8 +137,13 @@ class App(ctk.CTk):
         if self.settings.get('theme', 'Dark') == 'Dark': self.theme_switch.select()
         else: self.theme_switch.deselect()
         lang_code = self.settings.get('language', 'en')
-        lang_name = [k for k, v in self.lang_options.items() if v == lang_code][0]
-        self.language_menu.set(lang_name)
+        
+        try:
+            lang_name = [k for k, v in self.lang_options.items() if v == lang_code][0]
+            self.language_menu.set(lang_name)
+        except IndexError:
+            self.language_menu.set("English")
+            
         self.update_ui_language(lang_code)
         self.load_profiles()
 
