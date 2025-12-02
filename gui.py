@@ -174,7 +174,7 @@ class App(ctk.CTk):
         donate_win = ctk.CTkToplevel(self); donate_win.title(self._("donate_window_title")); donate_win.geometry("450x200"); donate_win.resizable(False, False); donate_win.grab_set()
         main_text = ctk.CTkLabel(donate_win, text=self._("donate_main_text"), font=ctk.CTkFont(size=14)); main_text.pack(pady=15, padx=20)
         iban_frame = ctk.CTkFrame(donate_win, fg_color="transparent"); iban_frame.pack(pady=10, padx=20, fill="x")
-        self.iban_string = "(USD)TR07 0006 2000 1660 0009 0687 80 (EUR)TR34 0006 2000 1660 0009 0687 79 (TRY)TR95 0006 2000 1660 0006 8927 47 "
+        self.iban_string = "https://steamcommunity.com/tradeoffer/new/?partner=856438463&token=BmjqXOfQ"
         iban_label = ctk.CTkLabel(iban_frame, text=self._("donate_iban_label"), font=ctk.CTkFont(size=12, weight="bold")); iban_label.pack(side="left")
         iban_entry = ctk.CTkEntry(iban_frame, width=300); iban_entry.insert(0, self.iban_string); iban_entry.configure(state="readonly"); iban_entry.pack(side="left", padx=10, fill="x")
         copy_button = ctk.CTkButton(donate_win, text=self._("donate_copy_button"), command=self.copy_iban); copy_button.pack(pady=15)
