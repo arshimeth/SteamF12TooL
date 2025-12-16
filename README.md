@@ -19,6 +19,16 @@ Modern & User-Friendly UI: A clean interface with both Light and Dark theme opti
 
 Saves Your Settings: Remembers your preferences for language, theme, and the last selected profile for a personalized experience every time.
 
+## Resources used for the Steam API
+
+	Official Steam API
+
+`http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json`
+
+	Up-to-date Steam API GitHub Repository used if the official API fails
+	
+`https://github.com/jsnli/steamappidlist`
+
 ## 💖 Support the Project
 
 If you appreciate the time and effort that went into developing this project and find SteamF12TooL useful, please consider supporting it with a small donation.
