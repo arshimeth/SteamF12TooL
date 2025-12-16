@@ -21,13 +21,13 @@ Saves Your Settings: Remembers your preferences for language, theme, and the las
 
 ## Resources used for the Steam API
 
-	Official Steam API
+Official Steam API
 
-`http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json`
+	`http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json`
 
-	Up-to-date Steam API GitHub Repository used if the official API fails
+Up-to-date Steam API GitHub Repository used if the official API fails
 	
-`https://github.com/jsnli/steamappidlist`
+	`https://github.com/jsnli/steamappidlist`
 
 ## 💖 Support the Project
 
