@@ -9,6 +9,21 @@ import re
 
 CONFIG_FILE = 'config.json'
 
+MANUAL_MODS = {
+    "17520": "Synergy",
+    "225840": "Sven Co-op",
+    "4000": "Garry's Mod",
+    "362890": "Black Mesa",
+    "290930": "Half-Life 2: Update",
+    "243750": "Source SDK Base 2013 Multiplayer",
+    "211": "Source SDK Base 2006",
+    "215": "Source SDK Base 2007",
+    "218": "Source SDK Base 2013 Singleplayer",
+    "427720": "Black Mesa: Blue Shift",
+    "1548270": "Prop Hunt",
+    "3081410": "Battlefield 6 (Redsec)" 
+}
+
 def load_settings():
     try:
         if os.path.exists(CONFIG_FILE):
@@ -54,42 +69,108 @@ def find_steam_profiles():
     return profiles
 
 def get_app_list_from_steam():
-    try:
-        url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        app_map = {str(app['appid']): app['name'] for app in data.get('applist', {}).get('apps', [])}
-        with open("steam_app_list.json", "w", encoding="utf-8") as f: json.dump(app_map, f)
-        return app_map
-    except (requests.RequestException, json.JSONDecodeError):
-        return None
+
+    sources = [
+        #  Offical Steam API
+        "http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json",
+        #  github repo API
+        "https://raw.githubusercontent.com/jsnli/steamappidlist/refs/heads/master/data/games_appid.json"
+    ]
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+
+    print("Oyun listesi indiriliyor...")
+
+    for url in sources:
+        try:
+            print(f"Bağlanılıyor: {url}")
+            
+           
+            raw_content = bytearray()
+            with requests.get(url, headers=headers, stream=True, timeout=60) as response:
+                response.raise_for_status()
+                for chunk in response.iter_content(chunk_size=65536):
+                    if chunk: raw_content.extend(chunk)
+            
+           
+            try:
+                json.loads(raw_content.decode('utf-8-sig', errors='ignore'))
+            except json.JSONDecodeError:
+                print("İndirilen veri geçerli bir JSON değil, atlanıyor.")
+                continue
+
+       
+            with open("steam_app_list.json", "wb") as f:
+                f.write(raw_content)
+                
+            print(f"Dosya başarıyla indirildi ve kaydedildi. Boyut: {len(raw_content)} byte.")
+            
+
+            return {"status": "success"} 
+
+        except Exception as e:
+            print(f"Hata ({url}): {e}")
+
+            continue
+            
+    return None
 
 def scan_for_games(selected_user_id):
     steam_path = get_steam_install_path()
     if not steam_path: return {"success": False, "message_key": "steam_not_found"}
 
     app_map = {}
-    try:
-        if os.path.exists("steam_app_list.json"):
-            with open("steam_app_list.json", "r", encoding="utf-8") as f: app_map = json.load(f)
-        else:
-            app_map = get_app_list_from_steam()
-            if app_map is None: return {"success": False, "message_key": "applist_download_fail"}
-    except Exception as e:
-        return {"success": False, "message_key": "applist_process_fail", "data": str(e)}
+    
+
+    app_map.update(MANUAL_MODS)
+
+
+    if os.path.exists("steam_app_list.json"):
+        try:
+            with open("steam_app_list.json", "r", encoding="utf-8-sig") as f: 
+                data = json.load(f)
+            
+  
+            if isinstance(data, list):
+                for item in data:
+                    if isinstance(item, dict):
+                        aid = item.get('appid') or item.get('appId') or item.get('id')
+                        name = item.get('name') or item.get('gamename')
+                        if aid and name:
+                            app_map[str(aid)] = name
+            
+
+            elif isinstance(data, dict):
+                source_list = []
+                if "applist" in data and "apps" in data["applist"]:
+                    source_list = data["applist"]["apps"]
+                elif "apps" in data:
+                    source_list = data["apps"]
+                else:
+                    for k, v in data.items(): app_map[str(k)] = str(v)
+                
+                for item in source_list:
+                    aid = item.get('appid')
+                    name = item.get('name')
+                    if aid and name: app_map[str(aid)] = name
+                    
+        except Exception as e:
+            print(f"Dosya okuma uyarısı: {e}")
 
     found_games = []
     remote_path = os.path.join(steam_path, "userdata", selected_user_id, "760", "remote")
+    
     if os.path.exists(remote_path):
         for app_id in os.listdir(remote_path):
             if not app_id.isdigit(): continue
             screenshots_path = os.path.join(remote_path, app_id, "screenshots")
             if os.path.exists(screenshots_path):
-                game_name = app_map.get(app_id, f"Bilinmeyen Oyun ({app_id})")
+
+                game_name = app_map.get(str(app_id), f"Oyun ID: {app_id}")
                 found_games.append({"name": game_name, "path": screenshots_path})
+                
     if not found_games:
         return {"success": False, "message_key": "no_games_with_screenshots_found"}
+        
     found_games.sort(key=lambda x: x['name'])
     return {"success": True, "data": found_games}
 

@@ -5,7 +5,7 @@ import os
 import sys
 import ctypes  
 from logic import (process_image, scan_for_games, find_steam_profiles, 
-                   load_settings, save_settings)
+                   load_settings, save_settings, get_app_list_from_steam)
 from languages import TRANSLATIONS
 
 
@@ -61,13 +61,11 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        
         try:
-            myappid = 'mycompany.steamf12tool.gui.1.0' # Benzersiz ID
+            myappid = 'mycompany.steamf12tool.gui.1.0'
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
         except Exception:
             pass
-
         
         icon_path = resource_path('logo.ico')
         if os.path.exists(icon_path):
@@ -76,7 +74,6 @@ class App(ctk.CTk):
             except Exception as e:
                 print(f"İkon yükleme hatası: {e}")
        
-
         self.settings = load_settings()
         self.current_lang = self.settings.get('language', 'en')
         ctk.set_appearance_mode(self.settings.get('theme', 'Dark'))
@@ -115,7 +112,13 @@ class App(ctk.CTk):
         self.middle_controls.grid(row=1, column=0, padx=20, pady=10, sticky="ew")
         self.profile_label = ctk.CTkLabel(self.middle_controls, font=ctk.CTkFont(size=12, weight="bold")); self.profile_label.pack(fill="x", pady=(10,0))
         self.profile_combobox = ctk.CTkComboBox(self.middle_controls, state="disabled", command=self.on_profile_select); self.profile_combobox.pack(fill="x", pady=5)
+        
         self.scan_button = ctk.CTkButton(self.middle_controls, command=self.find_and_list_games); self.scan_button.pack(fill="x", pady=10)
+        
+       
+        self.update_list_button = ctk.CTkButton(self.middle_controls, fg_color="#555555", command=self.update_steam_app_list)
+        self.update_list_button.pack(fill="x", pady=(0, 10))
+        
         self.game_combobox = ctk.CTkComboBox(self.middle_controls, state="disabled", command=self.on_game_select); self.game_combobox.pack(fill="x", pady=5)
         
         self.bottom_controls = ctk.CTkFrame(self.controls_frame, fg_color="transparent")
@@ -158,6 +161,10 @@ class App(ctk.CTk):
         self.image_button.configure(text=self._("select_image_button"))
         self.profile_label.configure(text=self._("select_profile"))
         self.scan_button.configure(text=self._("scan_games_button"))
+        
+ 
+        self.update_list_button.configure(text=self._("update_list_button"))
+        
         self.manual_folder_button.configure(text=self._("manual_folder_button"))
         self.process_button.configure(text=self._("upload_button"))
         self.theme_switch.configure(text=self._("dark_mode_switch"))
@@ -217,10 +224,15 @@ class App(ctk.CTk):
         selected_profile_name = self.profile_combobox.get()
         selected_user_id = self.profiles_data.get(selected_profile_name)
         if not selected_user_id: self.show_message({"success": False, "message_key": "no_profiles_found"}); return
+        
+        
         self.scan_button.configure(text=self._("scan_games_button_scanning"), state="disabled")
         self.update_idletasks()
+        
         result = scan_for_games(selected_user_id)
+        
         self.scan_button.configure(text=self._("scan_games_button"), state="normal")
+        
         if result["success"]:
             self.games_data = {game["name"]: game["path"] for game in result["data"]}
             game_names = list(self.games_data.keys())
@@ -230,6 +242,24 @@ class App(ctk.CTk):
         else:
             self.show_message(result)
             self.game_combobox.set(self._("game_combobox_fail"))
+
+    
+    def update_steam_app_list(self):
+        original_text = self.update_list_button.cget("text")
+        self.update_list_button.configure(text=self._("update_list_loading"), state="disabled")
+        self.update_idletasks()
+        
+        result = get_app_list_from_steam()
+        
+        self.update_list_button.configure(text=original_text, state="normal")
+        
+        if result:
+            messagebox.showinfo(self._("success"), self._("update_list_success"))
+       
+            if self.profile_combobox.get() not in [self._("no_profiles_found"), ""]:
+                self.find_and_list_games()
+        else:
+            messagebox.showerror(self._("error"), self._("update_list_fail"))
 
     def on_game_select(self, selected_game):
         path = self.games_data.get(selected_game)
@@ -331,7 +361,7 @@ class App(ctk.CTk):
 
     def toggle_ui_elements(self, enabled=True):
         state = "normal" if enabled else "disabled"
-        widgets = [self.image_button, self.profile_combobox, self.scan_button, self.game_combobox, self.manual_folder_button, self.process_button, self.language_menu, self.donate_button, self.rotate_left_button, self.rotate_right_button, self.crop_button, self.reset_button]
+        widgets = [self.image_button, self.profile_combobox, self.scan_button, self.update_list_button, self.game_combobox, self.manual_folder_button, self.process_button, self.language_menu, self.donate_button, self.rotate_left_button, self.rotate_right_button, self.crop_button, self.reset_button]
         for widget in widgets:
             if hasattr(self, widget.winfo_name()):
                 widget.configure(state=state)
