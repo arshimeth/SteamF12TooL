@@ -78,7 +78,7 @@ def find_steam_profiles():
     return profiles
 
 def get_app_list_from_steam():
-    # Bu fonksiyon sadece "GÜNCEL" listeyi indirip exe'nin yanına (local) kaydeder.
+  
     sources = [
         "http://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json",
         "https://raw.githubusercontent.com/jsnli/steamappidlist/refs/heads/master/data/games_appid.json"
@@ -102,7 +102,7 @@ def get_app_list_from_steam():
                 print("İndirilen veri geçerli bir JSON değil, atlanıyor.")
                 continue
 
-            # İndirilen dosya her zaman çalışılan dizine (exe yanına) kaydedilir.
+           
             with open("steam_app_list.json", "wb") as f:
                 f.write(raw_content)
                 
@@ -125,7 +125,7 @@ def parse_json_to_map(file_path, existing_map):
             data = json.load(f)
         
         source_list = []
-        # JSON yapısını analiz et (List mi, Dict mi?)
+        
         if isinstance(data, list):
             source_list = data
         elif isinstance(data, dict):
@@ -134,12 +134,12 @@ def parse_json_to_map(file_path, existing_map):
             elif "apps" in data:
                 source_list = data["apps"]
             else:
-                # Key-Value yapısındaysa (örn: {"10": "CS"})
+               
                 for k, v in data.items(): 
                     existing_map[str(k)] = str(v)
                 return 
 
-        # Liste yapısındaysa (örn: [{"appid": 10, "name": "CS"}]) standartlaştır
+        
         for item in source_list:
             if isinstance(item, dict):
                 aid = item.get('appid') or item.get('appId') or item.get('id')
@@ -155,20 +155,19 @@ def scan_for_games(selected_user_id):
 
     app_map = {}
     
-    # 1. ADIM: Gömülü Dosya (Exe içindeki temel liste - Offline Destek)
+   
     embedded_path = resource_path("steam_app_list.json")
     parse_json_to_map(embedded_path, app_map)
 
-    # 2. ADIM: İndirilmiş Dosya (Exe yanındaki güncel liste - Update Desteği)
+   
     local_path = "steam_app_list.json"
     
-    # Eğer geliştirme ortamındaysak embedded ve local aynı dosya olabilir,
-    # çift okumayı engellemek için path kontrolü yapıyoruz.
+
     if os.path.abspath(local_path) != os.path.abspath(embedded_path):
-        # Local dosya varsa, embedded verilerin üzerine yazar (günceller)
+      
         parse_json_to_map(local_path, app_map)
     
-    # 3. ADIM: Manuel Modlar (En yüksek öncelik)
+  
     app_map.update(MANUAL_MODS)
 
     found_games = []

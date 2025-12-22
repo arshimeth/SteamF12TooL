@@ -3,7 +3,6 @@ from tkinter import filedialog, messagebox, Canvas
 from PIL import Image, ImageTk
 import os
 import ctypes  
-# Logic dosyasından resource_path'i de import ettik:
 from logic import (process_image, scan_for_games, find_steam_profiles, 
                    load_settings, save_settings, get_app_list_from_steam, resource_path)
 from languages import TRANSLATIONS
@@ -59,7 +58,7 @@ class App(ctk.CTk):
         except Exception:
             pass
         
-        # resource_path'i logic.py'den çekiyoruz
+       
         icon_path = resource_path('logo.ico')
         if os.path.exists(icon_path):
             try:
