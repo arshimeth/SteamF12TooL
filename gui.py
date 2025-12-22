@@ -2,19 +2,11 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox, Canvas
 from PIL import Image, ImageTk
 import os
-import sys
 import ctypes  
+# Logic dosyasından resource_path'i de import ettik:
 from logic import (process_image, scan_for_games, find_steam_profiles, 
-                   load_settings, save_settings, get_app_list_from_steam)
+                   load_settings, save_settings, get_app_list_from_steam, resource_path)
 from languages import TRANSLATIONS
-
-
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
 
 STEAM_BLUE = "#1F6F8B"
 DONATE_RED = "#c42d33"
@@ -67,6 +59,7 @@ class App(ctk.CTk):
         except Exception:
             pass
         
+        # resource_path'i logic.py'den çekiyoruz
         icon_path = resource_path('logo.ico')
         if os.path.exists(icon_path):
             try:
@@ -115,7 +108,6 @@ class App(ctk.CTk):
         
         self.scan_button = ctk.CTkButton(self.middle_controls, command=self.find_and_list_games); self.scan_button.pack(fill="x", pady=10)
         
-       
         self.update_list_button = ctk.CTkButton(self.middle_controls, fg_color="#555555", command=self.update_steam_app_list)
         self.update_list_button.pack(fill="x", pady=(0, 10))
         
@@ -161,10 +153,7 @@ class App(ctk.CTk):
         self.image_button.configure(text=self._("select_image_button"))
         self.profile_label.configure(text=self._("select_profile"))
         self.scan_button.configure(text=self._("scan_games_button"))
-        
- 
         self.update_list_button.configure(text=self._("update_list_button"))
-        
         self.manual_folder_button.configure(text=self._("manual_folder_button"))
         self.process_button.configure(text=self._("upload_button"))
         self.theme_switch.configure(text=self._("dark_mode_switch"))
@@ -225,7 +214,6 @@ class App(ctk.CTk):
         selected_user_id = self.profiles_data.get(selected_profile_name)
         if not selected_user_id: self.show_message({"success": False, "message_key": "no_profiles_found"}); return
         
-        
         self.scan_button.configure(text=self._("scan_games_button_scanning"), state="disabled")
         self.update_idletasks()
         
@@ -243,7 +231,6 @@ class App(ctk.CTk):
             self.show_message(result)
             self.game_combobox.set(self._("game_combobox_fail"))
 
-    
     def update_steam_app_list(self):
         original_text = self.update_list_button.cget("text")
         self.update_list_button.configure(text=self._("update_list_loading"), state="disabled")
@@ -255,7 +242,6 @@ class App(ctk.CTk):
         
         if result:
             messagebox.showinfo(self._("success"), self._("update_list_success"))
-       
             if self.profile_combobox.get() not in [self._("no_profiles_found"), ""]:
                 self.find_and_list_games()
         else:
